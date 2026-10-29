@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charles David Y. Cruz | BSCpE Portfolio</title>
+    <!-- Google Fonts: Caveat for handwritten notes, Space Grotesk for crisp typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & SKETCHBOOK THEME
+           ========================================================================== */
+        :root {
+            /* Light Mode Tokens (Default) */
+            --bg-paper: #f8fafc;
+            --bg-paper-pattern: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+
+            /* Ink & Blueprint Palette */
+            --ink-primary: #1e293b;
+            --blue-accent: #3b82f6;
+            --blue-hover: #2563eb;
+            --blue-light: #60a5fa;
+            --blue-bg: #eff6ff;
+            --yellow-sticky: #fef08a;
+            --yellow-tape: rgba(253, 224, 71, 0.65);
+            --pencil-graphite: #334155;
+            --grid-line: rgba(59, 130, 246, 0.04);
+            --nav-bg: rgba(248, 250, 252, 0.95);
+
+            /* Kraft Paper Palette */
+            --kraft-color: #c89562;
+            --kraft-shadow: rgba(100, 65, 30, 0.3);
+
+            /* Normal Paper Palette */
+            --normal-paper-color: #fdfbf7;
+            --normal-paper-shadow: rgba(0, 0, 0, 0.18);
+
+            /* Typography Tokens */
+            --font-hand: 'Caveat', cursive;
+            --font-main: 'Space Grotesk', sans-serif;
+
+            /* Hand-Drawn Sketch Borders */
+            --sketch-border-1: 255px 15px 225px 15px/15px 225px 15px 255px;
+            --sketch-border-2: 15px 225px 15px 255px/255px 15px 225px 15px;
+            --sketch-shadow: 4px 5px 0px var(--ink-primary);
+            --sketch-shadow-hover: 7px 8px 0px var(--blue-accent);
+        }
+
+        /* Dark Mode Theme Variables */
+        [data-theme="dark"] {
+            --bg-paper: #0f172a;
+            --bg-paper-pattern: #1e293b;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+
+            --ink-primary: #f8fafc;
+            --blue-accent: #60a5fa;
+            --blue-hover: #93c5fd;
+            --blue-light: #3b82f6;
+            --blue-bg: rgba(59, 130, 246, 0.15);
+            --yellow-sticky: #854d0e;
+            --yellow-tape: rgba(234, 179, 8, 0.4);
+            --pencil-graphite: #94a3b8;
+            --grid-line: rgba(255, 255, 255, 0.05);
+            --nav-bg: rgba(15, 23, 42, 0.95);
+
+            --kraft-color: #7a532d;
+            --kraft-shadow: rgba(0, 0, 0, 0.5);
+
+            --normal-paper-color: #1e293b;
+            --normal-paper-shadow: rgba(0, 0, 0, 0.6);
+
+            --sketch-shadow: 4px 5px 0px #38bdf8;
+            --sketch-shadow-hover: 7px 8px 0px #60a5fa;
+        }
+
+        /* Base Resets */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important; /* Forces custom pencil cursor everywhere, including modals */
+        }
+
+        body {
+            background-color: var(--bg-paper);
+            background-image: 
+                radial-gradient(var(--text-muted) 0.75px, transparent 0.75px),
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px);
+            background-size: 24px 24px;
+            color: var(--text-main);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Background Logos */
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            width: 240px;
+            height: 240px;
+            background-image: url('assets/cdm-background.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+
+        body::before { top: 70px; right: 20px; transform: rotate(12deg); }
+        body::after { bottom: 20px; left: 20px; transform: rotate(-12deg); }
+
+        [data-theme="dark"] body::before,
+        [data-theme="dark"] body::after {
+            filter: invert(1);
+            opacity: 0.35;
+        }
+
+        /* Paper Accents */
+        .kraft-paper-bg, .normal-paper-bg {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .kraft-paper-bg {
+            background-color: var(--kraft-color);
+            opacity: 0.38;
+            filter: drop-shadow(3px 5px 8px var(--kraft-shadow));
+        }
+
+        .normal-paper-bg {
+            background-color: var(--normal-paper-color);
+            opacity: 0.52;
+            filter: drop-shadow(3px 4px 6px var(--normal-paper-shadow));
+        }
+
+        .kraft-tear-1 { top: 80px; right: -60px; width: 340px; height: 220px; transform: rotate(-18deg); clip-path: polygon(4% 0%, 96% 3%, 100% 90%, 88% 98%, 76% 88%, 62% 98%, 48% 91%, 32% 97%, 16% 89%, 0% 96%); }
+        .kraft-tear-2 { top: 42vh; left: -80px; width: 320px; height: 250px; transform: rotate(22deg); clip-path: polygon(0% 8%, 94% 0%, 100% 85%, 88% 96%, 72% 87%, 56% 97%, 42% 89%, 22% 98%, 6% 91%); }
+        .kraft-tear-3 { bottom: 40px; right: -55px; width: 360px; height: 230px; transform: rotate(-14deg); clip-path: polygon(8% 3%, 92% 0%, 98% 88%, 84% 97%, 68% 86%, 52% 96%, 36% 88%, 18% 97%, 0% 89%); }
+        .normal-tear-1 { top: 150px; left: -50px; width: 310px; height: 190px; transform: rotate(14deg); clip-path: polygon(6% 2%, 94% 5%, 100% 88%, 88% 97%, 72% 88%, 56% 96%, 40% 89%, 24% 98%, 8% 90%, 0% 95%); }
+        .normal-tear-2 { top: 68vh; right: -60px; width: 330px; height: 220px; transform: rotate(-20deg); clip-path: polygon(3% 4%, 96% 0%, 100% 92%, 86% 98%, 70% 89%, 54% 97%, 38% 90%, 20% 98%, 6% 92%, 0% 88%); }
+
+        ::selection { background: var(--yellow-sticky); color: var(--text-main); }
+
+        /* Canvas & Cursor */
+        #trailCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9997; }
+        #pencilCursor { position: fixed; pointer-events: none; z-index: 99999; transform: translate(-5px, -35px) rotate(-25deg); transition: transform 0.08s ease-out; filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.25)); }
+        #pencilCursor.drawing { transform: translate(-2px, -30px) rotate(-15deg) scale(0.95); }
+
+        /* Main Container & Layout */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; width: 100%; }
+        
+        main { 
+            flex: 1; 
+            margin-top: 80px; 
+            padding-bottom: 2rem; 
+            position: relative; 
+            z-index: 1; 
+            display: flex;
+            align-items: center;
+        }
+
+        /* ISOLATED SINGLE-FEATURE PAGE SECTIONS */
+        .page-section {
+            display: none !important; /* Hide completely from layout */
+            width: 100%;
+            padding: 2.5rem 0;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .page-section.active {
+            display: block !important; /* Display only active page feature */
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .handwritten { font-family: var(--font-hand); font-size: 1.4em; color: var(--blue-accent); line-height: 1.1; }
+        .highlight { background: linear-gradient(120deg, var(--yellow-sticky) 0%, var(--yellow-sticky) 100%); background-repeat: no-repeat; background-size: 100% 40%; background-position: 0 85%; padding: 0 4px; }
+        .section-header { text-align: center; margin-bottom: 3rem; position: relative; }
+        .section-title { font-size: 2.4rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: inline-block; color: var(--ink-primary); }
+        .section-subtitle { font-family: var(--font-hand); font-size: 1.6rem; color: var(--blue-accent); margin-top: 0.2rem; }
+
+        /* Sketch Card Box */
+        .sketch-box {
+            background: var(--bg-card);
+            border: 3.5px solid var(--ink-primary);
+            border-radius: var(--sketch-border-1);
+            box-shadow: var(--sketch-shadow);
+            padding: 1.8rem;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .sketch-box:hover { transform: translateY(-5px) rotate(-0.5deg); box-shadow: var(--sketch-shadow-hover); }
+
+        .tape-accent {
+            position: absolute; top: -12px; left: 30%; width: 90px; height: 26px;
+            background-color: var(--yellow-tape); transform: rotate(-3deg);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); pointer-events: none; z-index: 2;
+        }
+
+        .btn-sketch {
+            display: inline-flex; align-items: center; gap: 8px; padding: 0.8rem 1.6rem;
+            font-family: var(--font-main); font-weight: 700; font-size: 0.95rem;
+            color: var(--ink-primary); background: var(--bg-card); border: 3px solid var(--ink-primary);
+            border-radius: var(--sketch-border-2); box-shadow: var(--sketch-shadow);
+            text-decoration: none; transition: all 0.2s ease; position: relative; user-select: none;
+        }
+
+        .btn-sketch:hover { background: var(--blue-bg); color: var(--blue-accent); transform: translateY(-3px) scale(1.02); box-shadow: var(--sketch-shadow-hover); }
+        .btn-sketch-primary { background: var(--blue-accent); color: #ffffff; }
+        .btn-sketch-primary:hover { background: var(--blue-hover); color: #ffffff; }
+
+        /* Navigation Header */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 0.8rem 0; background: var(--nav-bg); backdrop-filter: blur(8px);
+            border-bottom: 2.5px dashed rgba(148, 163, 184, 0.4);
+        }
+
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-wrapper { display: flex; align-items: center; gap: 12px; }
+        .logo { font-family: var(--font-hand); font-size: 2.2rem; font-weight: 700; color: var(--ink-primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+
+        .tech-sketch-logo {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 44px; height: 44px; background: var(--bg-card); border: 2.5px solid var(--ink-primary);
+            border-radius: 50%; box-shadow: 2px 2px 0px var(--ink-primary); transform: rotate(-3deg);
+            overflow: hidden; padding: 2px; transition: transform 0.3s;
+        }
+
+        .logo:hover .tech-sketch-logo { transform: rotate(6deg) scale(1.1); background: var(--yellow-sticky); box-shadow: 3px 3px 0px var(--blue-accent); }
+        .tech-sketch-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+        .nav-right-actions { display: flex; align-items: center; gap: 1rem; }
+        .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+        .nav-links a { text-decoration: none; font-weight: 600; color: var(--ink-primary); font-size: 1rem; position: relative; padding: 4px 6px; transition: color 0.2s; }
+
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; width: 0%; height: 3px;
+            background: var(--blue-accent); border-radius: 10px; transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        .theme-toggle-btn {
+            background: var(--bg-card); border: 2.5px solid var(--ink-primary); border-radius: 20px;
+            padding: 6px 14px; font-family: var(--font-main); font-weight: 700; font-size: 0.9rem;
+            color: var(--ink-primary); box-shadow: 3px 3px 0px var(--ink-primary); display: flex;
+            align-items: center; gap: 8px; transition: all 0.2s ease; cursor: none !important;
+        }
+
+        .theme-toggle-btn:hover { transform: translateY(-2px); background: var(--yellow-sticky); box-shadow: 4px 4px 0px var(--blue-accent); }
+        .mobile-toggle { display: none; background: none; border: 2px solid var(--ink-primary); border-radius: 8px; padding: 6px 10px; font-size: 1.3rem; color: var(--ink-primary); }
+
+        /* Hero Section Styling */
+        .hero-grid { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 3rem; align-items: center; }
+        .hero-title-badge { display: inline-block; font-family: var(--font-hand); font-size: 1.5rem; color: var(--blue-accent); background: var(--blue-bg); border: 2px dashed var(--blue-accent); padding: 4px 14px; border-radius: 20px; margin-bottom: 0.8rem; transform: rotate(-2deg); }
+        .hero-h1 { font-size: 3.2rem; font-weight: 700; line-height: 1.15; margin-bottom: 0.8rem; color: var(--ink-primary); }
+        .typewriter-container { font-size: 1.35rem; font-weight: 600; color: var(--blue-accent); margin-bottom: 1.5rem; min-height: 2.2rem; }
+        .typewriter-text { border-right: 3px solid var(--blue-accent); padding-right: 4px; white-space: nowrap; animation: blink 0.75s infinite; }
+        @keyframes blink { 0%, 100% { border-color: transparent; } 50% { border-color: var(--blue-accent); } }
+
+        .quote-sketch-box { background: var(--yellow-sticky); border: 2px solid var(--ink-primary); box-shadow: 4px 4px 0px var(--ink-primary); padding: 1.2rem 1.5rem; border-radius: var(--sketch-border-2); margin-bottom: 2rem; position: relative; transform: rotate(-1deg); }
+        .quote-sketch-box p { font-style: italic; color: var(--text-main); font-size: 0.98rem; }
+        .quote-author { font-family: var(--font-hand); font-size: 1.3rem; color: var(--blue-hover); text-align: right; margin-top: 4px; font-weight: 700; }
+        .hero-cta { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+
+        .hero-avatar-card { background: var(--bg-card); border: 4px solid var(--ink-primary); border-radius: var(--sketch-border-2); box-shadow: 8px 10px 0px var(--ink-primary); padding: 1.2rem; text-align: center; position: relative; transform: rotate(2deg); transition: transform 0.3s ease; }
+        .hero-avatar-card:hover { transform: rotate(0deg) scale(1.02); }
+        .avatar-frame { width: 100%; height: 280px; background: var(--bg-paper-pattern); border: 3px dashed var(--pencil-graphite); border-radius: 12px; overflow: hidden; position: relative; cursor: none !important; }
+        .avatar-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+        .avatar-frame:hover img { transform: scale(1.08); }
+        .avatar-caption { font-family: var(--font-hand); font-size: 1.6rem; margin-top: 0.8rem; color: var(--ink-primary); font-weight: 700; }
+
+        /* Lightbox Modal */
+        .photo-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 20000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .photo-modal.active { opacity: 1; pointer-events: auto; }
+        .photo-modal-content { position: relative; max-width: 90%; max-height: 85vh; background: var(--bg-card); border: 4px solid var(--ink-primary); border-radius: var(--sketch-border-1); box-shadow: 10px 14px 0px rgba(0,0,0,0.5); padding: 1.5rem; display: flex; flex-direction: column; align-items: center; transform: scale(0.8); transition: transform 0.3s ease; }
+        .photo-modal.active .photo-modal-content { transform: scale(1); }
+        .photo-modal-img { max-width: 100%; max-height: 70vh; border-radius: 8px; border: 2px solid var(--ink-primary); object-fit: contain; }
+        .photo-modal-close { position: absolute; top: -18px; right: -18px; width: 42px; height: 42px; background: var(--yellow-sticky); border: 3px solid var(--ink-primary); border-radius: 50%; color: var(--text-main); font-size: 1.4rem; font-weight: bold; display: flex; align-items: center; justify-content: center; box-shadow: 2px 3px 0px var(--ink-primary); }
+        .photo-modal-close:hover { transform: scale(1.15) rotate(15deg); background: #ef4444; color: #ffffff; }
+
+        /* About Section */
+        .about-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3.5rem; align-items: center; }
+        .polaroid-wrapper { display: flex; justify-content: center; }
+        .polaroid { background: var(--bg-card); padding: 1.2rem 1.2rem 2.5rem 1.2rem; border: 3.5px solid var(--ink-primary); box-shadow: 8px 10px 0px var(--ink-primary); transform: rotate(-3deg); max-width: 340px; width: 100%; transition: transform 0.3s ease; position: relative; user-select: none; }
+        .polaroid:hover { transform: rotate(0deg) scale(1.02); }
+        .polaroid-img-bg { width: 100%; height: 270px; background: var(--bg-paper-pattern); border: 2px solid var(--ink-primary); border-radius: 4px; overflow: hidden; position: relative; cursor: none !important; }
+        .polaroid-img-bg img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+        .polaroid-img-bg:hover img { transform: scale(1.08); }
+        .polaroid-caption { font-family: var(--font-hand); font-size: 1.8rem; text-align: center; margin-top: 1rem; color: var(--ink-primary); font-weight: 700; }
+        .about-text-content p { font-size: 1.05rem; color: var(--text-muted); margin-bottom: 1.2rem; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-top: 2rem; }
+        .stat-card { background: var(--yellow-sticky); border: 2px solid var(--ink-primary); box-shadow: 4px 4px 0px var(--ink-primary); padding: 1rem; border-radius: 4px; transform: rotate(-1deg); }
+        .stat-card:nth-child(even) { background: var(--blue-bg); transform: rotate(2deg); }
+        .stat-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; color: var(--text-muted); }
+        .stat-value { font-family: var(--font-hand); font-size: 1.5rem; font-weight: 700; color: var(--text-main); line-height: 1.2; margin-top: 2px; }
+
+        /* Skills Section */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .skill-icon-title { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 10px; color: var(--ink-primary); }
+        .skill-icon-title i { color: var(--blue-accent); font-size: 1.6rem; }
+        .skill-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.2rem; }
+        .progress-bar-sketch { height: 16px; width: 100%; border: 2px solid var(--ink-primary); border-radius: 10px; background: var(--bg-paper); padding: 2px; overflow: hidden; position: relative; }
+        .progress-fill { height: 100%; background: var(--blue-accent); border-radius: 6px; width: 0%; transition: width 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
+
+        /* Projects Section */
+        .filter-container { display: flex; justify-content: center; gap: 0.8rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .filter-btn { background: var(--bg-card); border: 2px solid var(--ink-primary); color: var(--ink-primary); padding: 0.5rem 1.2rem; font-family: var(--font-main); font-weight: 600; font-size: 0.9rem; border-radius: 20px; cursor: none !important; transition: all 0.2s; box-shadow: 2px 3px 0px var(--ink-primary); }
+        .filter-btn:hover, .filter-btn.active { background: var(--ink-primary); color: var(--bg-paper); transform: scale(1.05) rotate(-1deg); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 2.2rem; }
+        .project-card { display: flex; flex-direction: column; justify-content: space-between; height: 100%; }
+        
+        /* Project Banner Image Frame */
+        .project-banner-img { 
+            height: 180px; 
+            background: var(--bg-paper-pattern); 
+            border: 2.5px solid var(--ink-primary); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            margin-bottom: 1rem; 
+            position: relative; 
+            cursor: none !important; 
+        }
+        .project-banner-img img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block; 
+            transition: transform 0.4s ease; 
+        }
+        .project-banner-img:hover img { 
+            transform: scale(1.08); 
+        }
+
+        .project-tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 1rem 0; }
+        .tag-sketch { font-family: var(--font-hand); font-size: 1.1rem; background: var(--yellow-sticky); color: var(--text-main); border: 1.5px solid var(--ink-primary); padding: 1px 10px; border-radius: 12px; transform: rotate(-1deg); }
+        .project-links { display: flex; gap: 1.2rem; margin-top: 1rem; padding-top: 0.8rem; border-top: 2px dashed var(--bg-paper-pattern); }
+        .project-link { font-weight: 700; font-size: 0.9rem; color: var(--blue-accent); text-decoration: none; display: flex; align-items: center; gap: 5px; }
+
+        /* Contact Section */
+        .contact-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; }
+        .contact-info-list { display: flex; flex-direction: column; gap: 1.2rem; }
+        .contact-info-card { background: var(--bg-card); border: 2.5px solid var(--ink-primary); border-radius: var(--sketch-border-2); padding: 1.2rem; box-shadow: 4px 4px 0px var(--ink-primary); display: flex; align-items: center; gap: 15px; }
+        .contact-info-card i { font-size: 1.8rem; color: var(--blue-accent); }
+        .contact-info-card h4 { font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
+        .contact-info-card p { font-weight: 600; color: var(--ink-primary); font-size: 0.95rem; }
+
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink-primary); font-size: 0.9rem; }
+        .form-control { width: 100%; padding: 0.8rem 1rem; font-family: var(--font-main); font-size: 0.95rem; background: var(--bg-paper); color: var(--text-main); border: 2.5px solid var(--ink-primary); border-radius: var(--sketch-border-2); outline: none; }
+        .form-control:focus { border-color: var(--blue-accent); box-shadow: 3px 3px 0px var(--blue-accent); }
+        .form-note { margin-top: 0.8rem; color: var(--text-muted); font-size: 0.85rem; text-align: center; }
+
+        @media (max-width: 868px) {
+            .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .hero-h1 { font-size: 2.5rem; }
+            .mobile-toggle { display: block; }
+            .nav-links { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg-card); border-bottom: 3px solid var(--ink-primary); flex-direction: column; padding: 1.5rem; gap: 1.2rem; display: none; }
+            .nav-links.open { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Paper Accents -->
+    <div class="kraft-paper-bg kraft-tear-1"></div>
+    <div class="kraft-paper-bg kraft-tear-2"></div>
+    <div class="kraft-paper-bg kraft-tear-3"></div>
+    <div class="normal-paper-bg normal-tear-1"></div>
+    <div class="normal-paper-bg normal-tear-2"></div>
+
+    <canvas id="trailCanvas"></canvas>
+
+    <div id="pencilCursor">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" fill="#fef08a" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M15 5l4 4" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/>
+            <path d="M3.5 18.5l2 2" stroke="#0f172a" stroke-width="2"/>
+            <polygon points="2,22 4.5,21 3,19.5" fill="#0f172a"/>
+        </svg>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <div class="logo-wrapper">
+                <a href="javascript:void(0)" class="logo nav-tab-link" data-target="home" title="CCDY Portfolio">
+                    <span class="tech-sketch-logo">
+                        <img src="assets/cdm-logo.jpg" alt="Colegio De Montalban Logo">
+                    </span>
+                    CCDY
+                </a>
+            </div>
+
+            <div class="nav-right-actions">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="javascript:void(0)" class="nav-tab-link active" data-target="home">HOME</a></li>
+                    <li><a href="javascript:void(0)" class="nav-tab-link" data-target="about">ABOUT</a></li>
+                    <li><a href="javascript:void(0)" class="nav-tab-link" data-target="skills">SKILLS</a></li>
+                    <li><a href="javascript:void(0)" class="nav-tab-link" data-target="projects">PROJECTS</a></li>
+                    <li><a href="javascript:void(0)" class="nav-tab-link" data-target="contact">CONTACT</a></li>
+                </ul>
+
+                <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle Dark and Light Mode">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                    <span id="themeLabel">Dark</span>
+                </button>
+
+                <button class="mobile-toggle" id="menuToggle" aria-label="Toggle Navigation Menu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Photo Modal -->
+    <div class="photo-modal" id="photoModal">
+        <div class="photo-modal-content">
+            <button class="photo-modal-close" id="closePhotoModal">&times;</button>
+            <img src="assets/profile.jpg" alt="Charles David Y. Cruz" class="photo-modal-img" id="modalTargetImg">
+            <div style="font-family: var(--font-hand); font-size: 1.8rem; margin-top: 10px; color: var(--ink-primary);" id="modalCaptionText">
+                Charles David Y. Cruz | BSCpE
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- 1. HOME FEATURE PAGE -->
+        <section id="home" class="page-section active">
+            <div class="hero-grid">
+                <div class="hero-text-content">
+                    <div class="hero-title-badge">Hello, my name is:</div>
+                    <h1 class="hero-h1">Charles David Y. Cruz</h1>
+                    
+                    <div class="typewriter-container">
+                        <span id="typewriter" class="typewriter-text"></span>
+                    </div>
+
+                    <div class="quote-sketch-box">
+                        <p>
+                            "We evolve beyond the person that we were a minute before. Little by little, we advance a bit further with each turn."
+                        </p>
+                        <div class="quote-author">- Gurren Lagann</div>
+                    </div>
+
+                    <div class="hero-cta">
+                        <a href="javascript:void(0)" class="btn-sketch btn-sketch-primary nav-tab-link" data-target="projects">
+                            View Projects 🚀
+                        </a>
+                        <a href="javascript:void(0)" class="btn-sketch nav-tab-link" data-target="contact">
+                            Get In Touch ✉️
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-avatar-card">
+                    <div class="tape-accent"></div>
+                    <div class="avatar-frame open-photo-trigger" data-img="assets/profile.jpg" data-caption="Charles David Y. Cruz | BSCpE" title="Click to view full image">
+                        <img src="assets/profile.jpg" alt="Charles David Y. Cruz">
+                    </div>
+                    <div class="avatar-caption">Charles David Y. Cruz | BSCpE</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT FEATURE PAGE -->
+        <section id="about" class="page-section">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <div class="section-subtitle">the student behind the screen</div>
+            </div>
+
+            <div class="about-grid">
+                <div class="polaroid-wrapper">
+                    <div class="polaroid open-photo-trigger" data-img="assets/profile.jpg" data-caption="Charles David Y. Cruz" title="Click to view full image">
+                        <div class="tape-accent" style="left: 35%; top: -14px;"></div>
+                        <div class="polaroid-img-bg">
+                            <img src="assets/profile.jpg" alt="Charles David Y. Cruz">
+                        </div>
+                        <div class="polaroid-caption">Charles David Y. Cruz</div>
+                    </div>
+                </div>
+
+                <div class="about-text-content">
+                    <h3 style="font-size: 1.7rem; margin-bottom: 1rem; color: var(--ink-primary);">
+                        <span class="highlight">More About My Self</span>.
+                    </h3>
+                    <p>
+                        I am Charles David Y. Cruz, an aspiring Computer Engineering student (BSCpE) from Colegio De Montalban (CDM). Eager to learn more and explore technology, software development, and modern web application building.
+                    </p>
+                    <p>
+                        Beyond being a Computer Engineering student (BSCpE), I also have my own set of hobbies that I do in my free time. For example, having fun with my friends, playing video games, listening to music, and playing sports.
+                    </p>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Degree</div>
+                            <div class="stat-value">BS Computer Engineering</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Focus</div>
+                            <div class="stat-value">Web & Software Dev</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Languages</div>
+                            <div class="stat-value">Python, JS, HTML, CSS</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Institution</div>
+                            <div class="stat-value">Colegio De Montalban</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SKILLS FEATURE PAGE -->
+        <section id="skills" class="page-section">
+            <div class="section-header">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <div class="section-subtitle">technologies & core competencies</div>
+            </div>
+
+            <div class="skills-grid">
+                <div class="sketch-box">
+                    <div class="tape-accent"></div>
+                    <div class="skill-icon-title">
+                        <i class="fa-brands fa-python"></i>
+                        <span>Python Programming</span>
+                    </div>
+                    <p class="skill-desc">
+                        Writing clean, structured scripts for basic algorithms, data handling, and beginner software projects.
+                    </p>
+                    <div class="progress-bar-sketch">
+                        <div class="progress-fill" data-progress="85%"></div>
+                    </div>
+                </div>
+
+                <div class="sketch-box">
+                    <div class="tape-accent" style="left: 55%;"></div>
+                    <div class="skill-icon-title">
+                        <i class="fa-solid fa-code"></i>
+                        <span>Web Development</span>
+                    </div>
+                    <p class="skill-desc">
+                        Building and styling responsive, structured web pages using fundamental HTML5, CSS3, and JS standards.
+                    </p>
+                    <div class="progress-bar-sketch">
+                        <div class="progress-fill" data-progress="90%"></div>
+                    </div>
+                </div>
+
+                <div class="sketch-box">
+                    <div class="tape-accent" style="left: 20%;"></div>
+                    <div class="skill-icon-title">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>Computer Hardware & Logic</span>
+                    </div>
+                    <p class="skill-desc">
+                        Understanding foundational computer system architecture, basic digital logic, and hardware concepts.
+                    </p>
+                    <div class="progress-bar-sketch">
+                        <div class="progress-fill" data-progress="80%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. PROJECTS FEATURE PAGE -->
+        <section id="projects" class="page-section">
+            <div class="section-header">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="section-subtitle">things I've sketched & coded into life</div>
+            </div>
+
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="software">Software & Python</button>
+                <button class="filter-btn" data-filter="web">Web Dev</button>
+                <button class="filter-btn" data-filter="tool">Tools & Demos</button>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Project 1: Student Management System -->
+                <div class="sketch-box project-card" data-category="software">
+                    <div class="tape-accent"></div>
+                    <div>
+                        <div class="project-banner-img open-photo-trigger" data-img="assets/student-management.svg" data-caption="Student Management System" title="Click to view full image">
+                            <img src="assets/student-management.svg" alt="Illustration of the Student Management System dashboard">
+                        </div>
+                        <h3 style="font-size: 1.35rem; color: var(--ink-primary); margin-bottom: 0.5rem;">Student Management System</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">
+                            A Python application designed to track student records, manage course registrations, and calculate automated attendance logs with file storage integration.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag-sketch">Python 3</span>
+                            <span class="tag-sketch">OOP</span>
+                            <span class="tag-sketch">File I/O</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="javascript:void(0)" class="project-link"><i class="fa-brands fa-github"></i> Repository</a>
+                        <a href="javascript:void(0)" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+                    </div>
+                </div>
+
+                <!-- Project 2: Responsive Portfolio Website -->
+                <div class="sketch-box project-card" data-category="web">
+                    <div class="tape-accent" style="left: 60%;"></div>
+                    <div>
+                        <div class="project-banner-img open-photo-trigger" data-img="assets/portfolio-website.svg" data-caption="Responsive Portfolio Website" title="Click to view full image">
+                            <img src="assets/portfolio-website.svg" alt="Illustration of a responsive portfolio website on a laptop">
+                        </div>
+                        <h3 style="font-size: 1.35rem; color: var(--ink-primary); margin-bottom: 0.5rem;">Responsive Portfolio Website</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">
+                            A clean, modern personal portfolio website built with native HTML5, CSS3, and JavaScript featuring custom interactive design tokens and animation details.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag-sketch">HTML5</span>
+                            <span class="tag-sketch">CSS3</span>
+                            <span class="tag-sketch">JavaScript</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="javascript:void(0)" class="project-link"><i class="fa-brands fa-github"></i> Repository</a>
+                        <a href="javascript:void(0)" class="project-link nav-tab-link" data-target="home"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live</a>
+                    </div>
+                </div>
+
+                <!-- Project 3: Interactive Code Demos & Tools -->
+                <div class="sketch-box project-card" data-category="tool">
+                    <div class="tape-accent" style="left: 20%;"></div>
+                    <div>
+                        <div class="project-banner-img open-photo-trigger" data-img="assets/interactive-tools.svg" data-caption="Interactive Code Demos & Tools" title="Click to view full image">
+                            <img src="assets/interactive-tools.svg" alt="Illustration of an interactive coding playground with controls and a live chart">
+                        </div>
+                        <h3 style="font-size: 1.35rem; color: var(--ink-primary); margin-bottom: 0.5rem;">Interactive Code Demos & Tools</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">
+                            A collection of interactive web utilities and algorithms visualization components implemented in Vanilla JavaScript for learning and experimentation.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag-sketch">JavaScript</span>
+                            <span class="tag-sketch">DOM Manipulation</span>
+                            <span class="tag-sketch">CSS Animations</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="javascript:void(0)" class="project-link"><i class="fa-brands fa-github"></i> Repository</a>
+                        <a href="javascript:void(0)" class="project-link"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. CONTACT FEATURE PAGE -->
+        <section id="contact" class="page-section">
+            <div class="section-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="section-subtitle">let's sketch out a connection!</div>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info-list">
+                    <div class="contact-info-card">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <h4>Email Address</h4>
+                            <p><a href="mailto:charlesdavidycruz@gmail.com">charlesdavidycruz@gmail.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <div>
+                            <h4>Degree Program</h4>
+                            <p>BS Computer Engineering (BSCpE)</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <div>
+                            <h4>Institution</h4>
+                            <p>Colegio De Montalban (CDM)</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-card">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>Philippines: Montalban, Rizal</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sketch-box">
+                    <div class="tape-accent" style="left: 45%;"></div>
+                    <form id="portfolioContactForm">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="johndoe@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-control" placeholder="Inquiry / Feedback" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="4" class="form-control" placeholder="Write your message here..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-sketch btn-sketch-primary" style="width: 100%; justify-content: center;">
+                            Send Message ✏️
+                        </button>
+                        <p class="form-note">This opens a pre-filled Gmail message for you to review and send.</p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        /* ==========================================================================
+           1. STRICT SINGLE-FEATURE PAGE SWITCHER LOGIC
+           ========================================================================== */
+        const tabLinks = document.querySelectorAll('.nav-tab-link');
+        const pageSections = document.querySelectorAll('.page-section');
+
+        function switchSection(targetId) {
+            // Completely hide all other sections
+            pageSections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Update top navigation active links
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-target') === targetId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Display ONLY the selected feature page
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+
+                // Fill progress bars if on skills view
+                if (targetId === 'skills') {
+                    const progressFills = targetSection.querySelectorAll('.progress-fill');
+                    progressFills.forEach(fill => {
+                        fill.style.width = fill.getAttribute('data-progress');
+                    });
+                }
+            }
+        }
+
+        tabLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                if (targetId) {
+                    switchSection(targetId);
+                    document.getElementById('navLinks').classList.remove('open');
+                }
+            });
+        });
+
+        /* ==========================================================================
+           2. DARK / LIGHT MODE SWITCHING LOGIC
+           ========================================================================== */
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeLabel = document.getElementById('themeLabel');
+
+        const savedTheme = localStorage.getItem('sketchbook-theme') || 'light';
+        setTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-sun';
+                themeLabel.textContent = 'Light';
+                localStorage.setItem('sketchbook-theme', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-moon';
+                themeLabel.textContent = 'Dark';
+                localStorage.setItem('sketchbook-theme', 'light');
+            }
+        }
+
+        /* ==========================================================================
+           3. PENCIL CURSOR & CANVAS DRAWING TRAIL LOGIC
+           ========================================================================== */
+        const pencilCursor = document.getElementById('pencilCursor');
+        const canvas = document.getElementById('trailCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        let points = [];
+
+        window.addEventListener('mousemove', (e) => {
+            pencilCursor.style.left = `${e.clientX}px`;
+            pencilCursor.style.top = `${e.clientY}px`;
+
+            points.push({
+                x: e.clientX,
+                y: e.clientY,
+                alpha: 0.55,
+                size: Math.random() * 2 + 1.5
+            });
+
+            pencilCursor.classList.add('drawing');
+            clearTimeout(window.pencilTimeout);
+            window.pencilTimeout = setTimeout(() => {
+                pencilCursor.classList.remove('drawing');
+            }, 150);
+        });
+
+        function drawPencilTrail() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const trailColor = isDark ? '248, 250, 252' : '30, 41, 59';
+
+            for (let i = 0; i < points.length; i++) {
+                const pt = points[i];
+                ctx.beginPath();
+                ctx.arc(pt.x, pt.y, pt.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${trailColor}, ${pt.alpha})`;
+                ctx.fill();
+
+                pt.alpha -= 0.015;
+            }
+
+            points = points.filter(p => p.alpha > 0);
+            requestAnimationFrame(drawPencilTrail);
+        }
+        drawPencilTrail();
+
+        /* ==========================================================================
+           4. TYPEWRITER EFFECT IN HERO
+           ========================================================================== */
+        const typewriterElement = document.getElementById('typewriter');
+        const phrases = [
+            "Future Computer Engineer",
+            "BSCpE Student @ CDM",
+            "Web & Software Developer",
+            "Tech & Hardware Enthusiast"
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeLoop() {
+            const currentPhrase = phrases[phraseIndex];
+
+            if (isDeleting) {
+                typewriterElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 1800;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 400;
+            }
+
+            setTimeout(typeLoop, typeSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', typeLoop);
+
+        /* ==========================================================================
+           5. MOBILE MENU & LIGHTBOX MODAL WITH DYNAMIC CAPTIONS
+           ========================================================================== */
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        const photoModal = document.getElementById('photoModal');
+        const modalTargetImg = document.getElementById('modalTargetImg');
+        const modalCaptionText = document.getElementById('modalCaptionText');
+        const closePhotoModal = document.getElementById('closePhotoModal');
+        const photoTriggers = document.querySelectorAll('.open-photo-trigger');
+
+        photoTriggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const imgSrc = trigger.getAttribute('data-img');
+                const captionText = trigger.getAttribute('data-caption');
+                if (imgSrc) {
+                    modalTargetImg.src = imgSrc;
+                }
+                if (captionText && modalCaptionText) {
+                    modalCaptionText.textContent = captionText;
+                }
+                if (captionText) {
+                    modalTargetImg.alt = captionText;
+                }
+                photoModal.classList.add('active');
+            });
+        });
+
+        if (closePhotoModal && photoModal) {
+            closePhotoModal.addEventListener('click', () => {
+                photoModal.classList.remove('active');
+            });
+
+            photoModal.addEventListener('click', (e) => {
+                if (e.target === photoModal) {
+                    photoModal.classList.remove('active');
+                }
+            });
+        }
+
+        /* ==========================================================================
+           6. PROJECT FILTERING LOGIC
+           ========================================================================== */
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    if (filterValue === 'all' || category === filterValue) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        /* ==========================================================================
+           7. CONTACT FORM
+           ========================================================================== */
+        const contactForm = document.getElementById('portfolioContactForm');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(contactForm);
+                const subject = formData.get('subject');
+                const body = [
+                    `Name: ${formData.get('name')}`,
+                    `Email: ${formData.get('email')}`,
+                    '',
+                    'Message:',
+                    formData.get('message')
+                ].join('\n');
+                const params = new URLSearchParams({
+                    view: 'cm',
+                    fs: '1',
+                    to: 'charlesdavidycruz@gmail.com',
+                    su: subject,
+                    body
+                });
+
+                window.location.assign(`https://mail.google.com/mail/?${params.toString()}`);
+            });
+        }
+    </script>
+</body>
+</html>
